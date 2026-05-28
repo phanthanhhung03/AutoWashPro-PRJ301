@@ -10,24 +10,24 @@ public class Customer {
     private String email;
     private String password;
     private String address;
-    private int TierId;
+    private CustomerTier tierId;
     private int currentPoint;
     private int totalBooking;
-    private int totalSpend;
+    private Double totalSpend;
     private boolean status;
     private Date createdAt;
 
     public Customer() {
     }
 
-    public Customer(int cusId, String fullName, String phoneNumber, String email, String password, String address, int TierId, int currentPoint, int totalBooking, int totalSpend, boolean status, Date createdAt) {
+    public Customer(int cusId, String fullName, String phoneNumber, String email, String password, String address, CustomerTier tierId, int currentPoint, int totalBooking, Double totalSpend, boolean status, Date createdAt) {
         this.cusId = cusId;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
         this.address = address;
-        this.TierId = TierId;
+        this.tierId = tierId;
         this.currentPoint = currentPoint;
         this.totalBooking = totalBooking;
         this.totalSpend = totalSpend;
@@ -83,12 +83,12 @@ public class Customer {
         this.address = address;
     }
 
-    public int getTierId() {
-        return TierId;
+    public CustomerTier getTierId() {
+        return tierId;
     }
 
-    public void setTierId(int TierId) {
-        this.TierId = TierId;
+    public void setTierId(CustomerTier tierId) {
+        this.tierId = tierId;
     }
 
     public int getCurrentPoint() {
@@ -107,11 +107,11 @@ public class Customer {
         this.totalBooking = totalBooking;
     }
 
-    public int getTotalSpend() {
+    public Double getTotalSpend() {
         return totalSpend;
     }
 
-    public void setTotalSpend(int totalSpend) {
+    public void setTotalSpend(Double totalSpend) {
         this.totalSpend = totalSpend;
     }
 

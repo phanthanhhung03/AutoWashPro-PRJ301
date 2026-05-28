@@ -5,6 +5,7 @@
 package dao;
 
 import dto.Customer;
+import dto.CustomerTier;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -25,17 +26,23 @@ public class CustomerDAO {
         try {
             // Step 1: Connect DB
             cn = dbutils.DBUtils.getConnection();
-            
-            if (cn == null) System.out.println("not connect");
+
+            if (cn == null) {
+                System.out.println("not connect");
+            }
 
             if (cn != null) {
 
                 // Step 2: SQL
-                String sql = "SELECT CustomerID, FullName, PhoneNumber, Address, "
-                        + "TierID, CurrentPoints, TotalBookings, TotalSpend, "
-                        + "Status, CreatedAt "
-                        + "FROM Customers "
-                        + "WHERE Email = ? AND PasswordHash = ?";
+                String sql = "SELECT " + "c.CustomerID, " + "c.FullName, " + "c.PhoneNumber, " + "c.Email, " + "c.Address, " + "c.CurrentPoints, " + "c.TotalBookings, "
+                        + "c.TotalSpend, "
+                        + "c.Status, "
+                        + "c.CreatedAt, "
+                        + "t.TierID, " + "t.TierName, " + "t.MinBookings, " + "t.MinSpend, " + "t.PointMultiplier, "
+                        + "t.DiscountPercent, "
+                        + "t.PriorityLevel, "
+                        + "t.BookingWindowDays "
+                        + "FROM Customers c " + "JOIN CustomerTiers t " + "ON c.TierID = t.TierID " + "WHERE c.Email = ? " + "AND c.PasswordHash = ?";
 
                 // Step 3
                 st = cn.prepareStatement(sql);
@@ -50,20 +57,34 @@ public class CustomerDAO {
 
                 if (table.next()) {
 
-                    result = new Customer();
+                    // Create Tier Object
+                    CustomerTier tier = new CustomerTier();
+                    tier.setTierID(table.getInt("TierID"));
+                    tier.setTierName(table.getString("TierName"));
+                    tier.setMinBookings(table.getInt("MinBookings"));
+                    tier.setMinSpend(table.getDouble("MinSpend"));
+                    tier.setPointMultiplier(table.getDouble("PointMultiplier"));
+                    tier.setDiscountPercent(table.getDouble("DiscountPercent"));
+                    tier.setPriorityLevel(table.getInt("PriorityLevel"));
+                    tier.setBookingWindowDays(table.getInt("BookingWindowDays"));
 
+                    // Create Customer Object
+                    result = new Customer();
                     result.setCusId(table.getInt("CustomerID"));
                     result.setFullName(table.getString("FullName"));
                     result.setPhoneNumber(table.getString("PhoneNumber"));
                     result.setEmail(email);
                     result.setPassword(password);
                     result.setAddress(table.getString("Address"));
-                    result.setTierId(table.getInt("TierID"));
                     result.setCurrentPoint(table.getInt("CurrentPoints"));
                     result.setTotalBooking(table.getInt("TotalBookings"));
-                    result.setTotalSpend(table.getInt("TotalSpend"));
+                    result.setTotalSpend(table.getDouble("TotalSpend"));
                     result.setStatus(table.getBoolean("Status"));
                     result.setCreatedAt(table.getDate("CreatedAt"));
+
+                    // Set Tier Object
+                    result.setTierId(tier);
+
                 }
             }
         } catch (Exception e) {
@@ -89,7 +110,7 @@ public class CustomerDAO {
         }
         return result;
     }
-    
+
     public Customer getCustomer(String email) {
         Customer result = null;
         Connection cn = null;
@@ -99,8 +120,10 @@ public class CustomerDAO {
         try {
             // Step 1: Connect DB
             cn = dbutils.DBUtils.getConnection();
-            
-            if (cn == null) System.out.println("not connect");
+
+            if (cn == null) {
+                System.out.println("not connect");
+            }
 
             if (cn != null) {
 
@@ -128,10 +151,9 @@ public class CustomerDAO {
                     result.setPhoneNumber(table.getString("PhoneNumber"));
                     result.setEmail(email);
                     result.setAddress(table.getString("Address"));
-                    result.setTierId(table.getInt("TierID"));
                     result.setCurrentPoint(table.getInt("CurrentPoints"));
                     result.setTotalBooking(table.getInt("TotalBookings"));
-                    result.setTotalSpend(table.getInt("TotalSpend"));
+                    result.setTotalSpend(table.getDouble("TotalSpend"));
                     result.setStatus(table.getBoolean("Status"));
                     result.setCreatedAt(table.getDate("CreatedAt"));
                 }

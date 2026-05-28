@@ -42,7 +42,7 @@ CREATE TABLE Customers
 
     PhoneNumber NVARCHAR(20) NOT NULL UNIQUE,
 
-    Email NVARCHAR(100) UNIQUE,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
 
     PasswordHash NVARCHAR(255) NOT NULL,
 
