@@ -1,56 +1,38 @@
 
 package controller;
 
-import dao.CustomerDAO;
-import dto.Customer;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
-
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
+public class LogoutServlet extends HttpServlet {
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         try {
-        // Lấy thông tin từ form 
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
+        // 1. Chống lưu Cache để giải quyết vấn đề nút "Back" trên trình duyệt
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+            response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+            response.setDateHeader("Expires", 0); // Proxies.
 
-            CustomerDAO d = new CustomerDAO();
-            Customer customer = d.getCustomer(email, password);
-
-        // Xử lý khi không tìm thấy tài khoản hoặc sai mật khẩu
-        if (customer == null) {
-            request.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác!");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-            return; 
-        } 
-
-        // Xử lý khi tài khoản bị khóa
-        if (!customer.isStatus()) {
-            request.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa hoặc từ chối truy cập!");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-            return;
+        // 2. Lấy session hiện tại 
+            HttpSession session = request.getSession(false);// Tham số false có nghĩa là: "Chỉ lấy session nếu nó đang tồn tại, tuyệt đối không tạo mới".
+        // 3. Nếu session tồn tại thì mới tiến hành hủy
+            if (session != null) {
+                session.invalidate();
         }
-
-        // Đăng nhập thành công
-        request.getSession().setAttribute("USER", customer);
-        response.sendRedirect("dashboard.jsp");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("ERROR", "Hệ thống đang gặp sự cố, vui lòng thử lại sau!");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        }
+        // 4. Điều hướng về trang chủ
+            response.sendRedirect("index.jsp");
+        }catch(Exception e){
+          e.printStackTrace();
+       } 
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
