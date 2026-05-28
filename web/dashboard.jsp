@@ -1,9 +1,70 @@
 <%@page import="dto.Customer"%>
 
 <%
-    Customer user = (Customer)session.getAttribute("USER");
+    Customer user = (Customer) session.getAttribute("USER");
     if (user == null) {
         response.sendRedirect("index.jsp");
+    }
+
+    // Next Reward
+    String nextTierName = "";
+    int remainingBookings = 0;
+    double remainingSpend = 0;
+
+    String tierName = user.getTierId().getTierName();
+
+    int currentBookings = user.getTotalBooking();
+    double currentSpend = user.getTotalSpend();
+
+    switch (tierName) {
+
+        case "Member":
+
+            nextTierName = "Silver";
+
+            remainingBookings = 5 - currentBookings;
+
+            remainingSpend = 2000000 - currentSpend;
+
+            break;
+
+        case "Silver":
+
+            nextTierName = "Gold";
+
+            remainingBookings = 15 - currentBookings;
+
+            remainingSpend = 6000000 - currentSpend;
+
+            break;
+
+        case "Gold":
+
+            nextTierName = "Platinum";
+
+            remainingBookings = 30 - currentBookings;
+
+            remainingSpend = 15000000 - currentSpend;
+
+            break;
+
+        case "Platinum":
+
+            nextTierName = "MAX";
+
+            remainingBookings = 0;
+            remainingSpend = 0;
+
+            break;
+    }
+
+// Tranh negative number
+    if (remainingBookings < 0) {
+        remainingBookings = 0;
+    }
+
+    if (remainingSpend < 0) {
+        remainingSpend = 0;
     }
 %>
 
@@ -107,7 +168,7 @@
                             <div class="dash-header__avatar"><%= user.getInitials()%></div>
                             <div class="dash-header__user-info">
                                 <span class="dash-header__name"><%= user.getFullName()%></span>
-                                <span class="dash-header__badge">Gold Member</span>
+                                <span class="dash-header__badge"> <%= user.getTierId().getTierName()%> </span>
                             </div>
                         </div>
                     </div>
@@ -127,7 +188,7 @@
                             <div class="member-overview-card__header">
                                 <div>
                                     <span class="member-overview-card__tier-lbl">Current Tier</span>
-                                    <div class="member-overview-card__tier-val">Gold Level</div>
+                                    <div class="member-overview-card__tier-val"><%= user.getTierId().getTierName()%> Level</div>
                                 </div>
                                 <span class="member-overview-card__badge">
                                     <i class="fa-solid fa-award"></i> VIP Status
@@ -136,17 +197,53 @@
 
                             <div>
                                 <span class="member-overview-card__points-lbl">Available Points</span>
-                                <div class="member-overview-card__points-val">750 <span>/ 1000 pts</span></div>
+                                <div class="member-overview-card__points-val"><%= user.getCurrentPoint()%> <span>pts</span></div>
                             </div>
 
-                            <div class="member-overview-card__progress-wrapper">
-                                <div class="member-overview-card__progress-info">
-                                    <span>Progress to Platinum Tier</span>
-                                    <span>75%</span>
+                            <div class="member-overview-card__reward">
+
+                                <span class="member-overview-card__reward-label">
+                                    Next Tier Requirement
+                                </span>
+
+                                <% if (!nextTierName.equals("MAX")) {%>
+
+                                <div class="member-overview-card__reward-value">
+
+                                    Unlock
+                                    <%= nextTierName%>
+                                    Tier
+
                                 </div>
-                                <div class="member-overview-card__progress-bar-bg">
-                                    <div class="member-overview-card__progress-bar-fill" style="width: 75%;"></div>
+
+                                <div class="member-overview-card__requirement">
+
+                                    <div> Need
+                                        <strong>
+                                            <%= remainingBookings%>
+                                        </strong>
+                                        more washes
+                                    </div>
+
+                                    <div> OR spend more
+                                        <strong>
+                                            <%= String.format("%,.0f", remainingSpend)%>
+                                        </strong>
+                                        VND 
+                                    </div>
+
                                 </div>
+
+                                <% } else { %>
+
+                                <div class="member-overview-card__reward-value">
+
+                                    Highest Membership Tier Achieved
+
+                                </div>
+
+                                <% }%>
+
                             </div>
                         </section>
 
@@ -492,17 +589,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="settingsMembershipTier" class="form-group__label">Membership Plan
-                                            Tier</label>
+                                        <label for="settingsMembershipTier" class="form-group__label">Membership Tier</label>
                                         <div class="form-group__input-wrapper">
                                             <i class="fa-solid fa-crown form-group__icon"></i>
-                                            <select id="settingsMembershipTier" name="membershipTier"
-                                                    class="form-group__input" disabled>
-                                                <option value="Member">Member Tier</option>
-                                                <option value="Silver">Silver Tier</option>
-                                                <option value="Gold" selected>Gold Tier (Active)</option>
-                                                <option value="Platinum">Platinum Tier</option>
-                                            </select>
+                                            <input type="text"class="form-group__input" id="settingsMembershipTier" 
+                                                   value="<%= user.getTierId().getTierName()%> "readonly />
                                         </div>
                                     </div>
                                 </div>
