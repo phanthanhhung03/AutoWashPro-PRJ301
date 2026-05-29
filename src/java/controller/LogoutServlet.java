@@ -16,18 +16,13 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-        // 1. Chống lưu Cache để giải quyết vấn đề nút "Back" trên trình duyệt
-            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-            response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-            response.setDateHeader("Expires", 0); // Proxies.
-
-        // 2. Lấy session hiện tại 
+        // 1. Lấy session hiện tại 
             HttpSession session = request.getSession(false);// Tham số false có nghĩa là: "Chỉ lấy session nếu nó đang tồn tại, tuyệt đối không tạo mới".
-        // 3. Nếu session tồn tại thì mới tiến hành hủy
+        // 2. Nếu session tồn tại thì mới tiến hành hủy
             if (session != null) {
                 session.invalidate();
         }
-        // 4. Điều hướng về trang chủ
+        // 3. Điều hướng về trang chủ
             response.sendRedirect("index.jsp");
         }catch(Exception e){
           e.printStackTrace();
@@ -45,7 +40,7 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request,response);
     }
 
     /**
@@ -59,7 +54,7 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request,response);
     }
 
     /**

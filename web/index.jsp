@@ -574,7 +574,7 @@
                             <div class="form-group__input-wrapper">
                                 <i class="fa-solid fa-envelope form-group__icon"></i>
                                 <input type="email" class="form-group__input" id="loginEmail" name="email"
-                                       placeholder="name@example.com" autocomplete="email" required>
+                                       placeholder="name@example.com" autocomplete="email" required maxlength="50">
                             </div>
                             <p class="form-error">${requestScope.ERROR}</p>
                         </div>
@@ -584,7 +584,7 @@
                             <div class="form-group__input-wrapper">
                                 <i class="fa-solid fa-lock form-group__icon"></i>
                                 <input type="password" class="form-group__input" id="loginPassword" name="password"
-                                       placeholder="Enter your password" autocomplete="current-password" required>
+                                       placeholder="Enter your password" autocomplete="current-password" required minlength="3" maxlength="20">
                             </div>
                         </div>
 
