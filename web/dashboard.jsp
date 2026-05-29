@@ -3,7 +3,7 @@
 <% Customer user = (Customer) session.getAttribute("USER");
     if (user == null) {
         response.sendRedirect("index.jsp");
-    } 
+    }
     String nextTierName = "";
     int remainingBookings = 0;
     double remainingSpend = 0;
@@ -34,9 +34,9 @@
             break;
     } //
     if (remainingBookings < 0) {
-        remainingBookings = 0;
-    }
-    if (remainingSpend < 0) {
+            remainingBookings = 0;
+        }
+        if (remainingSpend < 0) {
             remainingSpend = 0;
         }%>
 
@@ -70,8 +70,8 @@
         <div class="dashboard-container" id="dashboardContainer">
 
             <!-- ==========================================================================
-           1. SIDEBAR NAVIGATION
-           ========================================================================== */ -->
+       1. SIDEBAR NAVIGATION
+       ========================================================================== */ -->
             <aside class="sidebar" id="dashboardSidebar">
                 <div class="sidebar__header">
                     <a href="index.jsp" class="sidebar__logo" id="sidebarLogo">
@@ -112,8 +112,8 @@
             </aside>
 
             <!-- ==========================================================================
-           2. MAIN DASHBOARD CONTENT
-           ========================================================================== */ -->
+       2. MAIN DASHBOARD CONTENT
+       ========================================================================== */ -->
             <main class="dashboard-main" id="dashboardMainArea">
 
                 <!-- Top Header Navbar -->
@@ -161,14 +161,15 @@
 
                         <!-- Membership card -->
                         <section class="dash-card member-overview-card" id="membershipOverviewCard">
-                            <h2 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+                            <h2
+                                style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
                                 Membership Overview
                             </h2>
-                            
+
                             <!-- Premium Background Blobs -->
                             <div class="member-overview-card__glow-blob-1"></div>
                             <div class="member-overview-card__glow-blob-2"></div>
-                            
+
                             <div class="member-overview-card__container">
                                 <!-- Left Column: Digital Pass Face -->
                                 <div class="member-overview-card__pass">
@@ -179,85 +180,105 @@
                                             <span>AutoWash Pro</span>
                                         </div>
                                         <span class="member-overview-card__pass-badge">
-                                            <i class="fa-solid fa-crown"></i> <%= user.getTierId().getTierName()%> VIP
+                                            <i class="fa-solid fa-crown"></i>
+                                            <%= user.getTierId().getTierName()%> VIP
                                         </span>
                                     </div>
-                                    
+
                                     <div class="member-overview-card__pass-body">
                                         <span class="member-overview-card__pass-label">MEMBER ACCOUNT</span>
-                                        <div class="member-overview-card__pass-name"><%= user.getFullName()%></div>
+                                        <div class="member-overview-card__pass-name">
+                                            <%= user.getFullName()%>
+                                        </div>
                                     </div>
-                                    
+
                                     <div class="member-overview-card__pass-footer">
                                         <div class="member-overview-card__pass-stat">
                                             <span class="member-overview-card__pass-stat-lbl">Tier Level</span>
-                                            <span class="member-overview-card__pass-stat-val"><%= user.getTierId().getTierName()%></span>
+                                            <span class="member-overview-card__pass-stat-val">
+                                                <%= user.getTierId().getTierName()%>
+                                            </span>
                                         </div>
                                         <div class="member-overview-card__pass-stat">
                                             <span class="member-overview-card__pass-stat-lbl">Loyalty Points</span>
-                                            <span class="member-overview-card__pass-stat-val font-accent"><%= user.getCurrentPoint()%> <span class="pts-suffix">pts</span></span>
+                                            <span class="member-overview-card__pass-stat-val font-accent">
+                                                <%= user.getCurrentPoint()%> <span class="pts-suffix">pts</span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Right Column: Progression Hub -->
                                 <div class="member-overview-card__progress-hub">
-                                    <% if (!nextTierName.equals("MAX")) { %>
-                                        <div class="member-overview-card__progress-header">
-                                            <span class="member-overview-card__progress-pretitle">Next Tier Quest</span>
-                                            <h3 class="member-overview-card__progress-title">
-                                                Unlock <span class="tier-highlight"><%= nextTierName%></span> Status
-                                            </h3>
-                                            <p class="member-overview-card__progress-desc">
-                                                Fulfill either target below to upgrade your benefits.
-                                            </p>
-                                        </div>
-                                        
-                                        <div class="member-overview-card__requirement-grid">
-                                            <!-- Requirement Card 1 -->
-                                            <div class="member-overview-card__req-card">
-                                                <div class="member-overview-card__req-icon">
-                                                    <i class="fa-solid fa-shower"></i>
-                                                </div>
-                                                <div class="member-overview-card__req-details">
-                                                    <span class="member-overview-card__req-target">
-                                                        <strong><%= remainingBookings%></strong> washes
-                                                    </span>
-                                                    <span class="member-overview-card__req-lbl">Remaining washes</span>
-                                                </div>
+                                    <% if (!nextTierName.equals("MAX")) {%>
+                                    <div class="member-overview-card__progress-header">
+                                        <span class="member-overview-card__progress-pretitle">Next Tier
+                                            Quest</span>
+                                        <h3 class="member-overview-card__progress-title">
+                                            Unlock <span class="tier-highlight">
+                                                <%= nextTierName%>
+                                            </span> Status
+                                        </h3>
+                                        <p class="member-overview-card__progress-desc">
+                                            Fulfill either target below to upgrade your benefits.
+                                        </p>
+                                    </div>
+
+                                    <div class="member-overview-card__requirement-grid">
+                                        <!-- Requirement Card 1 -->
+                                        <div class="member-overview-card__req-card">
+                                            <div class="member-overview-card__req-icon">
+                                                <i class="fa-solid fa-shower"></i>
                                             </div>
-                                            
-                                            <!-- Elegant Modern OR Divider -->
-                                            <div class="member-overview-card__divider">
-                                                <span class="member-overview-card__divider-line"></span>
-                                                <span class="member-overview-card__divider-badge">or</span>
-                                                <span class="member-overview-card__divider-line"></span>
-                                            </div>
-                                            
-                                            <!-- Requirement Card 2 -->
-                                            <div class="member-overview-card__req-card">
-                                                <div class="member-overview-card__req-icon">
-                                                    <i class="fa-solid fa-receipt"></i>
-                                                </div>
-                                                <div class="member-overview-card__req-details">
-                                                    <span class="member-overview-card__req-target">
-                                                        <strong><%= String.format("%,.0f", remainingSpend)%></strong> <span class="currency">VND</span>
-                                                    </span>
-                                                    <span class="member-overview-card__req-lbl">Spend remaining</span>
-                                                </div>
+                                            <div class="member-overview-card__req-details">
+                                                <span class="member-overview-card__req-target">
+                                                    <strong>
+                                                        <%= remainingBookings%>
+                                                    </strong> washes
+                                                </span>
+                                                <span class="member-overview-card__req-lbl">Remaining
+                                                    washes</span>
                                             </div>
                                         </div>
+
+                                        <!-- Elegant Modern OR Divider -->
+                                        <div class="member-overview-card__divider">
+                                            <span class="member-overview-card__divider-line"></span>
+                                            <span class="member-overview-card__divider-badge">or</span>
+                                            <span class="member-overview-card__divider-line"></span>
+                                        </div>
+
+                                        <!-- Requirement Card 2 -->
+                                        <div class="member-overview-card__req-card">
+                                            <div class="member-overview-card__req-icon">
+                                                <i class="fa-solid fa-receipt"></i>
+                                            </div>
+                                            <div class="member-overview-card__req-details">
+                                                <span class="member-overview-card__req-target">
+                                                    <strong>
+                                                        <%= String.format("%,.0f", remainingSpend)%>
+                                                    </strong> <span class="currency">VND</span>
+                                                </span>
+                                                <span class="member-overview-card__req-lbl">Spend
+                                                    remaining</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <% } else { %>
-                                        <div class="member-overview-card__max-tier">
-                                            <div class="member-overview-card__max-icon-wrapper">
-                                                <i class="fa-solid fa-crown member-overview-card__max-crown"></i>
-                                            </div>
-                                            <h3 class="member-overview-card__max-title">Peak Status Achieved</h3>
-                                            <p class="member-overview-card__max-desc">
-                                                You have achieved Platinum status, the highest loyalty tier at AutoWash Pro. Enjoy your premium perks and priority lane accesses!
-                                            </p>
+                                    <div class="member-overview-card__max-tier">
+                                        <div class="member-overview-card__max-icon-wrapper">
+                                            <i
+                                                class="fa-solid fa-crown member-overview-card__max-crown"></i>
                                         </div>
-                                    <% } %>
+                                        <h3 class="member-overview-card__max-title">Peak Status Achieved
+                                        </h3>
+                                        <p class="member-overview-card__max-desc">
+                                            You have achieved Platinum status, the highest loyalty tier at
+                                            AutoWash Pro. Enjoy your premium perks and priority lane
+                                            accesses!
+                                        </p>
+                                    </div>
+                                    <% }%>
                                 </div>
                             </div>
                         </section>
@@ -641,8 +662,8 @@
         </div>
 
         <!-- ==========================================================================
-       DASHBOARD MODAL: ADD VEHICLE
-       ========================================================================== -->
+   DASHBOARD MODAL: ADD VEHICLE
+   ========================================================================== -->
         <div class="modal-overlay" id="addVehicleModalOverlay">
             <div class="modal-card" id="addVehicleModalCard" role="dialog" aria-modal="true"
                  aria-labelledby="addVehicleTitle">
@@ -742,8 +763,8 @@
         </div>
 
         <!-- ==========================================================================
-       DASHBOARD MODAL: BOOK CAR WASH
-       ========================================================================== -->
+   DASHBOARD MODAL: BOOK CAR WASH
+   ========================================================================== -->
         <div class="modal-overlay" id="bookingModalOverlay">
             <div class="modal-card" id="bookingModalCard" role="dialog" aria-modal="true"
                  aria-labelledby="bookingTitle">
