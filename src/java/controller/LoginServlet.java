@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package controller;
 
 import dao.CustomerDAO;
@@ -13,10 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Asus
- */
+
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
@@ -24,40 +18,48 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        try {
+            // Lấy thông tin từ form 
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
 
-        CustomerDAO d = new CustomerDAO();
-        Customer customer = d.getCustomer(email, password);
-        if (customer == null) {
-            Customer check = d.getCustomer(email);
-            if (check != null) {
-                System.out.println("PASSWORD ERROR SET");
-                request.setAttribute("PASSWORD_ERROR", "Incorrect password");
+            // VALIDATE: Kiểm tra rỗng và khoảng trắng
+            if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+                request.setAttribute("ERROR", "Vui lòng nhập đầy đủ Email và Mật khẩu!");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
-                return;
-            } else {
-                System.out.println("EMAIL ERROR SET");
-                request.setAttribute("EMAIL_ERROR", "Email does not exist");
+                return; // Chặn lại ngay lập tức, không gọi Database
+            }
+
+            // TỐI ƯU UX: Dọn dẹp khoảng trắng thừa do copy-paste ở ô Email
+            email = email.trim(); 
+            
+            CustomerDAO d = new CustomerDAO();
+            Customer customer = d.getCustomer(email, password);
+
+            // Xử lý khi không tìm thấy tài khoản hoặc sai mật khẩu
+            if (customer == null) {
+                request.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác!");
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+                return; 
+            } 
+
+            // Xử lý khi tài khoản bị khóa
+            if (!customer.isStatus()) {
+                request.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa hoặc từ chối truy cập!");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
                 return;
             }
 
-        } else {
-            if (customer.isStatus()) {
-                request.getSession().setAttribute("USER", customer);
-                response.sendRedirect("dashboard.jsp");
-            } else {
-                request.setAttribute("ERROR", "ACCESS DENIED");
+            // Đăng nhập thành công
+            request.getSession().setAttribute("USER", customer);
+            response.sendRedirect("dashboard.jsp");
 
-                request.getRequestDispatcher("index.jsp")
-                        .forward(request, response);
-
-                return;
-
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.setAttribute("ERROR", "Hệ thống đang gặp sự cố, vui lòng thử lại sau!");
+                request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

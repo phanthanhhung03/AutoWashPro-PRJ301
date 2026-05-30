@@ -1,8 +1,16 @@
 <%@page import="dto.Customer" %>
 
-<% Customer user = (Customer) session.getAttribute("USER");
+<%
+    // 1. ep trinh duyet khong luu cache trang dashboard
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
+    response.setHeader("Pragma", "no-cache"); 
+    response.setDateHeader("Expires", 0); 
+
+    // 2. kiem tra session
+    dto.Customer user = (dto.Customer) session.getAttribute("USER");
     if (user == null) {
         response.sendRedirect("index.jsp");
+        return; 
     }
     String nextTierName = "";
     int remainingBookings = 0;
@@ -105,7 +113,7 @@
                 </nav>
 
                 <div class="sidebar__footer">
-                    <a href="index.jsp" class="sidebar__link" id="menuLogout">
+                    <a href="LogoutServlet" class="sidebar__link" id="menuLogout">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
                 </div>

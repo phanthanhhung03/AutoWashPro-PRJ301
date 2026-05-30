@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 import dto.Customer;
@@ -11,10 +8,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-/**
- *
- * @author Asus
- */
+
 public class CustomerDAO {
 
     public Customer getCustomer(String email, String password) {
@@ -26,10 +20,6 @@ public class CustomerDAO {
         try {
             // Step 1: Connect DB
             cn = dbutils.DBUtils.getConnection();
-
-            if (cn == null) {
-                System.out.println("not connect");
-            }
 
             if (cn != null) {
 
@@ -74,7 +64,6 @@ public class CustomerDAO {
                     result.setFullName(table.getString("FullName"));
                     result.setPhoneNumber(table.getString("PhoneNumber"));
                     result.setEmail(email);
-                    result.setPassword(password);
                     result.setAddress(table.getString("Address"));
                     result.setCurrentPoint(table.getInt("CurrentPoints"));
                     result.setTotalBooking(table.getInt("TotalBookings"));

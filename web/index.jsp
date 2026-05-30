@@ -567,7 +567,40 @@
 
                     <!-- TODO: Connect LoginServlet -->
                     <!-- TODO: Validate data from SQL Server -->
-                    <form action="LoginServlet" method="post" id="signInServletForm"> <!-- FORM ERROR --> <div class="form-global-error"> ${requestScope.ERROR} </div> <div class="form-group"> <label for="loginEmail" class="form-group__label"> Email Address </label> <div class="form-group__input-wrapper"> <i class="fa-solid fa-envelope form-group__icon"></i> <input type="email" class="form-group__input" id="loginEmail" name="email" placeholder="name@example.com" autocomplete="email" required> </div> </div> <div class="form-group"> <label for="loginPassword" class="form-group__label"> Password </label> <div class="form-group__input-wrapper"> <i class="fa-solid fa-lock form-group__icon"></i> <input type="password" class="form-group__input" id="loginPassword" name="password" placeholder="Enter your password" autocomplete="current-password" required> </div> </div> <div class="form-actions-row"> <label class="form-checkbox" for="loginRemember"> <input type="checkbox" class="form-checkbox__input" id="loginRemember" name="remember" value="true"> Remember me </label> <a href="#" class="form-link" id="forgotPasswordLink"> Forgot Password? </a> </div> <button type="submit" class="btn btn--primary" id="submitSignInBtn"> Sign In </button> </form>
+                    <form action="LoginServlet" method="post" id="signInServletForm">
+
+                        <div class="form-group">
+                            <label for="loginEmail" class="form-group__label">Email Address</label>
+                            <div class="form-group__input-wrapper">
+                                <i class="fa-solid fa-envelope form-group__icon"></i>
+                                <input type="email" class="form-group__input" id="loginEmail" name="email"
+                                       placeholder="name@example.com" autocomplete="email" required maxlength="50">
+                            </div>
+                            <p class="form-error">${requestScope.ERROR}</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loginPassword" class="form-group__label">Password</label>
+                            <div class="form-group__input-wrapper">
+                                <i class="fa-solid fa-lock form-group__icon"></i>
+                                <input type="password" class="form-group__input" id="loginPassword" name="password"
+                                       placeholder="Enter your password" autocomplete="current-password" required minlength="3" maxlength="20">
+                            </div>
+                        </div>
+
+                        <div class="form-actions-row">
+                            <label class="form-checkbox" for="loginRemember">
+                                <input type="checkbox" class="form-checkbox__input" id="loginRemember" name="remember"
+                                       value="true">
+                                Remember me
+                            </label>
+                            <a href="#" class="form-link" id="forgotPasswordLink">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary" id="submitSignInBtn">
+                            Sign In
+                        </button>
+                    </form>
                 </div>
 
                 <div class="modal-card__footer">
