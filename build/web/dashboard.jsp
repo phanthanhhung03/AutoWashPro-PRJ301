@@ -1,52 +1,11 @@
-<%@page import="dto.Customer" %>
+<%@page import="dto.Customer"%>
 
 <%
-    // 1. ep trinh duyet khong luu cache trang dashboard
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
-    response.setHeader("Pragma", "no-cache"); 
-    response.setDateHeader("Expires", 0); 
-
-    // 2. kiem tra session
-    dto.Customer user = (dto.Customer) session.getAttribute("USER");
+    Customer user = (Customer) session.getAttribute("USER");
     if (user == null) {
         response.sendRedirect("index.jsp");
-        return; 
     }
-    String nextTierName = "";
-    int remainingBookings = 0;
-    double remainingSpend = 0;
-    String tierName = user.getTierId().getTierName();
-    int currentBookings = user.getTotalBooking();
-    double currentSpend = user.getTotalSpend();
-    switch (tierName) {
-        case "Member":
-            nextTierName = "Silver";
-            remainingBookings = 5 - currentBookings;
-            remainingSpend = 2000000 - currentSpend;
-            break;
-        case "Silver":
-            nextTierName = "Gold";
-            remainingBookings = 15 - currentBookings;
-            remainingSpend = 6000000 - currentSpend;
-            break;
-        case "Gold":
-            nextTierName = "Platinum";
-            remainingBookings = 30 - currentBookings;
-            remainingSpend = 15000000
-                    - currentSpend;
-            break;
-        case "Platinum":
-            nextTierName = "MAX";
-            remainingBookings = 0;
-            remainingSpend = 0;
-            break;
-    } //
-    if (remainingBookings < 0) {
-            remainingBookings = 0;
-        }
-        if (remainingSpend < 0) {
-            remainingSpend = 0;
-        }%>
+%>
 
 
 <!DOCTYPE html>
@@ -78,8 +37,8 @@
         <div class="dashboard-container" id="dashboardContainer">
 
             <!-- ==========================================================================
-       1. SIDEBAR NAVIGATION
-       ========================================================================== */ -->
+               1. SIDEBAR NAVIGATION
+               ========================================================================== */ -->
             <aside class="sidebar" id="dashboardSidebar">
                 <div class="sidebar__header">
                     <a href="index.jsp" class="sidebar__logo" id="sidebarLogo">
@@ -113,22 +72,21 @@
                 </nav>
 
                 <div class="sidebar__footer">
-                    <a href="LogoutServlet" class="sidebar__link" id="menuLogout">
+                    <a href="index.jsp" class="sidebar__link" id="menuLogout">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
                 </div>
             </aside>
 
             <!-- ==========================================================================
-       2. MAIN DASHBOARD CONTENT
-       ========================================================================== */ -->
+               2. MAIN DASHBOARD CONTENT
+               ========================================================================== */ -->
             <main class="dashboard-main" id="dashboardMainArea">
 
                 <!-- Top Header Navbar -->
                 <header class="dash-header" id="dashboardHeader">
                     <div class="dash-header__left">
-                        <button type="button" class="dash-header__toggle" id="sidebarToggleBtn"
-                                aria-label="Toggle Sidebar">
+                        <button type="button" class="dash-header__toggle" id="sidebarToggleBtn" aria-label="Toggle Sidebar">
                             <i class="fa-solid fa-bars"></i>
                         </button>
                         <h1 class="dash-header__title">Dashboard</h1>
@@ -146,16 +104,10 @@
 
                         <!-- Profile Info -->
                         <div class="dash-header__profile" id="userProfileBadge">
-                            <div class="dash-header__avatar">
-                                <%= user.getInitials()%>
-                            </div>
+                            <div class="dash-header__avatar"><%= user.getInitials()%></div>
                             <div class="dash-header__user-info">
-                                <span class="dash-header__name">
-                                    <%= user.getFullName()%>
-                                </span>
-                                <span class="dash-header__badge">
-                                    <%= user.getTierId().getTierName()%>
-                                </span>
+                                <span class="dash-header__name"><%= user.getFullName()%></span>
+                                <span class="dash-header__badge">Gold Member</span>
                             </div>
                         </div>
                     </div>
@@ -171,122 +123,29 @@
                         <section class="dash-card member-overview-card" id="membershipOverviewCard">
                             <h2
                                 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
-                                Membership Overview
-                            </h2>
-
-                            <!-- Premium Background Blobs -->
-                            <div class="member-overview-card__glow-blob-1"></div>
-                            <div class="member-overview-card__glow-blob-2"></div>
-
-                            <div class="member-overview-card__container">
-                                <!-- Left Column: Digital Pass Face -->
-                                <div class="member-overview-card__pass">
-                                    <div class="member-overview-card__pass-shine"></div>
-                                    <div class="member-overview-card__pass-header">
-                                        <div class="member-overview-card__pass-brand">
-                                            <i class="fa-solid fa-droplet member-overview-card__pass-logo"></i>
-                                            <span>AutoWash Pro</span>
-                                        </div>
-                                        <span class="member-overview-card__pass-badge">
-                                            <i class="fa-solid fa-crown"></i>
-                                            <%= user.getTierId().getTierName()%> VIP
-                                        </span>
-                                    </div>
-
-                                    <div class="member-overview-card__pass-body">
-                                        <span class="member-overview-card__pass-label">MEMBER ACCOUNT</span>
-                                        <div class="member-overview-card__pass-name">
-                                            <%= user.getFullName()%>
-                                        </div>
-                                    </div>
-
-                                    <div class="member-overview-card__pass-footer">
-                                        <div class="member-overview-card__pass-stat">
-                                            <span class="member-overview-card__pass-stat-lbl">Tier Level</span>
-                                            <span class="member-overview-card__pass-stat-val">
-                                                <%= user.getTierId().getTierName()%>
-                                            </span>
-                                        </div>
-                                        <div class="member-overview-card__pass-stat">
-                                            <span class="member-overview-card__pass-stat-lbl">Loyalty Points</span>
-                                            <span class="member-overview-card__pass-stat-val font-accent">
-                                                <%= user.getCurrentPoint()%> <span class="pts-suffix">pts</span>
-                                            </span>
-                                        </div>
-                                    </div>
+                                Membership Overview</h2>
+                            <div class="member-overview-card__header">
+                                <div>
+                                    <span class="member-overview-card__tier-lbl">Current Tier</span>
+                                    <div class="member-overview-card__tier-val">Gold Level</div>
                                 </div>
+                                <span class="member-overview-card__badge">
+                                    <i class="fa-solid fa-award"></i> VIP Status
+                                </span>
+                            </div>
 
-                                <!-- Right Column: Progression Hub -->
-                                <div class="member-overview-card__progress-hub">
-                                    <% if (!nextTierName.equals("MAX")) {%>
-                                    <div class="member-overview-card__progress-header">
-                                        <span class="member-overview-card__progress-pretitle">Next Tier
-                                            Quest</span>
-                                        <h3 class="member-overview-card__progress-title">
-                                            Unlock <span class="tier-highlight">
-                                                <%= nextTierName%>
-                                            </span> Status
-                                        </h3>
-                                        <p class="member-overview-card__progress-desc">
-                                            Fulfill either target below to upgrade your benefits.
-                                        </p>
-                                    </div>
+                            <div>
+                                <span class="member-overview-card__points-lbl">Available Points</span>
+                                <div class="member-overview-card__points-val">750 <span>/ 1000 pts</span></div>
+                            </div>
 
-                                    <div class="member-overview-card__requirement-grid">
-                                        <!-- Requirement Card 1 -->
-                                        <div class="member-overview-card__req-card">
-                                            <div class="member-overview-card__req-icon">
-                                                <i class="fa-solid fa-shower"></i>
-                                            </div>
-                                            <div class="member-overview-card__req-details">
-                                                <span class="member-overview-card__req-target">
-                                                    <strong>
-                                                        <%= remainingBookings%>
-                                                    </strong> washes
-                                                </span>
-                                                <span class="member-overview-card__req-lbl">Remaining
-                                                    washes</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Elegant Modern OR Divider -->
-                                        <div class="member-overview-card__divider">
-                                            <span class="member-overview-card__divider-line"></span>
-                                            <span class="member-overview-card__divider-badge">or</span>
-                                            <span class="member-overview-card__divider-line"></span>
-                                        </div>
-
-                                        <!-- Requirement Card 2 -->
-                                        <div class="member-overview-card__req-card">
-                                            <div class="member-overview-card__req-icon">
-                                                <i class="fa-solid fa-receipt"></i>
-                                            </div>
-                                            <div class="member-overview-card__req-details">
-                                                <span class="member-overview-card__req-target">
-                                                    <strong>
-                                                        <%= String.format("%,.0f", remainingSpend)%>
-                                                    </strong> <span class="currency">VND</span>
-                                                </span>
-                                                <span class="member-overview-card__req-lbl">Spend
-                                                    remaining</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <% } else { %>
-                                    <div class="member-overview-card__max-tier">
-                                        <div class="member-overview-card__max-icon-wrapper">
-                                            <i
-                                                class="fa-solid fa-crown member-overview-card__max-crown"></i>
-                                        </div>
-                                        <h3 class="member-overview-card__max-title">Peak Status Achieved
-                                        </h3>
-                                        <p class="member-overview-card__max-desc">
-                                            You have achieved Platinum status, the highest loyalty tier at
-                                            AutoWash Pro. Enjoy your premium perks and priority lane
-                                            accesses!
-                                        </p>
-                                    </div>
-                                    <% }%>
+                            <div class="member-overview-card__progress-wrapper">
+                                <div class="member-overview-card__progress-info">
+                                    <span>Progress to Platinum Tier</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="member-overview-card__progress-bar-bg">
+                                    <div class="member-overview-card__progress-bar-fill" style="width: 75%;"></div>
                                 </div>
                             </div>
                         </section>
@@ -294,14 +153,12 @@
                         <!-- Quick Actions Card -->
                         <section class="dash-card" id="quickActionsCard">
                             <div class="dash-card__header">
-                                <h2 class="dash-card__title"><i
-                                        class="fa-solid fa-rocket dash-card__title-icon"></i> Quick
+                                <h2 class="dash-card__title"><i class="fa-solid fa-rocket dash-card__title-icon"></i> Quick
                                     Actions</h2>
                             </div>
                             <div class="quick-actions">
                                 <button type="button" class="quick-action-btn" id="actionBookWash">
-                                    <span class="quick-action-btn__icon"><i
-                                            class="fa-solid fa-calendar-plus"></i></span>
+                                    <span class="quick-action-btn__icon"><i class="fa-solid fa-calendar-plus"></i></span>
                                     <span class="quick-action-btn__lbl">Book Wash</span>
                                 </button>
                                 <button type="button" class="quick-action-btn" id="actionAddVehicle">
@@ -327,8 +184,7 @@
                             <a href="#" class="dash-card__action-link" id="addNewVehicleLink">+ Add New Vehicle</a>
                         </div>
                         <p class="section-header__subtitle dash-card__subtitle">
-                            Manage all your vehicles in one account. Tap on a vehicle to modify license plates or
-                            review
+                            Manage all your vehicles in one account. Tap on a vehicle to modify license plates or review
                             statuses.
                         </p>
 
@@ -439,21 +295,18 @@
                         <!-- Promotions / Rewards Section -->
                         <section class="dash-card" id="rewardsSection">
                             <div class="dash-card__header">
-                                <h2 class="dash-card__title"><i class="fa-solid fa-tags dash-card__title-icon"></i>
-                                    My
+                                <h2 class="dash-card__title"><i class="fa-solid fa-tags dash-card__title-icon"></i> My
                                     Promotion Rewards</h2>
                             </div>
                             <div class="promo-list">
                                 <article class="promo-card">
                                     <span class="promo-card__badge">Gold Perk</span>
                                     <h3 class="promo-card__title">Rainy Day 10% Off</h3>
-                                    <p class="promo-card__desc">Enjoy 10% off any wash tier during rain events.
-                                        Exclusive to
+                                    <p class="promo-card__desc">Enjoy 10% off any wash tier during rain events. Exclusive to
                                         Gold & Silver tiers.</p>
                                     <div class="promo-card__code">
                                         <span class="promo-card__code-txt">RAINY10GOLD</span>
-                                        <button type="button" class="promo-card__copy-btn"
-                                                id="copyPromo1Btn">Copy</button>
+                                        <button type="button" class="promo-card__copy-btn" id="copyPromo1Btn">Copy</button>
                                     </div>
                                 </article>
                             </div>
@@ -482,16 +335,14 @@
                     <!-- ROW 4: Wash History Section -->
                     <section class="dash-card" id="historySection">
                         <div class="dash-card__header">
-                            <h2 class="dash-card__title"><i class="fa-solid fa-history dash-card__title-icon"></i>
-                                Wash
+                            <h2 class="dash-card__title"><i class="fa-solid fa-history dash-card__title-icon"></i> Wash
                                 History</h2>
                             <a href="#" class="dash-card__action-link">Download Full Log</a>
                         </div>
 
                         <!-- TODO: Connect HistoryServlet -->
                         <!-- TODO: Validate data from SQL Server -->
-                        <form action="history" method="post" id="searchFilterServletForm"
-                              class="history-filter-form">
+                        <form action="history" method="post" id="searchFilterServletForm" class="history-filter-form">
                             <div class="form-group history-filter-form__group-search">
                                 <label for="searchQuery" class="form-group__label">Search Vehicle or Plate</label>
                                 <div class="form-group__input-wrapper">
@@ -606,17 +457,16 @@
                                         <label for="settingsEmail" class="form-group__label">Email Address</label>
                                         <div class="form-group__input-wrapper">
                                             <i class="fa-solid fa-envelope form-group__icon"></i>
-                                            <input type="email" class="form-group__input" id="settingsEmail"
-                                                   name="email" value="alex.johnson@example.com" autocomplete="email"
-                                                   required>
+                                            <input type="email" class="form-group__input" id="settingsEmail" name="email"
+                                                   value="alex.johnson@example.com" autocomplete="email" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="settingsPhone" class="form-group__label">Phone Number</label>
                                         <div class="form-group__input-wrapper">
                                             <i class="fa-solid fa-phone form-group__icon"></i>
-                                            <input type="tel" class="form-group__input" id="settingsPhone"
-                                                   name="phone" value="+1 (555) 019-2834" autocomplete="tel" required>
+                                            <input type="tel" class="form-group__input" id="settingsPhone" name="phone"
+                                                   value="+1 (555) 019-2834" autocomplete="tel" required>
                                         </div>
                                     </div>
                                 </div>
@@ -627,30 +477,32 @@
                                             Password</label>
                                         <div class="form-group__input-wrapper">
                                             <i class="fa-solid fa-lock-open form-group__icon"></i>
-                                            <input type="password" class="form-group__input"
-                                                   id="settingsCurrentPassword" name="currentPassword"
-                                                   placeholder="Enter current password to verify"
+                                            <input type="password" class="form-group__input" id="settingsCurrentPassword"
+                                                   name="currentPassword" placeholder="Enter current password to verify"
                                                    autocomplete="current-password">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="settingsNewPassword" class="form-group__label">New
-                                            Password</label>
+                                        <label for="settingsNewPassword" class="form-group__label">New Password</label>
                                         <div class="form-group__input-wrapper">
                                             <i class="fa-solid fa-lock form-group__icon"></i>
-                                            <input type="password" class="form-group__input"
-                                                   id="settingsNewPassword" name="newPassword"
-                                                   placeholder="Min 6 characters (optional)"
+                                            <input type="password" class="form-group__input" id="settingsNewPassword"
+                                                   name="newPassword" placeholder="Min 6 characters (optional)"
                                                    autocomplete="new-password">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="settingsMembershipTier" class="form-group__label">Membership
+                                        <label for="settingsMembershipTier" class="form-group__label">Membership Plan
                                             Tier</label>
                                         <div class="form-group__input-wrapper">
                                             <i class="fa-solid fa-crown form-group__icon"></i>
-                                            <input type="text" class="form-group__input" id="settingsMembershipTier"
-                                                   value="<%= user.getTierId().getTierName()%> " readonly />
+                                            <select id="settingsMembershipTier" name="membershipTier"
+                                                    class="form-group__input" disabled>
+                                                <option value="Member">Member Tier</option>
+                                                <option value="Silver">Silver Tier</option>
+                                                <option value="Gold" selected>Gold Tier (Active)</option>
+                                                <option value="Platinum">Platinum Tier</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -670,22 +522,20 @@
         </div>
 
         <!-- ==========================================================================
-   DASHBOARD MODAL: ADD VEHICLE
-   ========================================================================== -->
+           DASHBOARD MODAL: ADD VEHICLE
+           ========================================================================== -->
         <div class="modal-overlay" id="addVehicleModalOverlay">
             <div class="modal-card" id="addVehicleModalCard" role="dialog" aria-modal="true"
                  aria-labelledby="addVehicleTitle">
                 <div class="modal-card__header">
                     <h2 class="modal-card__title" id="addVehicleTitle">Register New Vehicle</h2>
-                    <button type="button" class="modal-card__close" aria-label="Close Modal"
-                            id="closeAddVehicleBtn">
+                    <button type="button" class="modal-card__close" aria-label="Close Modal" id="closeAddVehicleBtn">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
 
                 <div class="modal-card__body">
-                    <p class="modal-card__lead">Add a vehicle to your account to enable License Plate Recognition
-                        (LPR)
+                    <p class="modal-card__lead">Add a vehicle to your account to enable License Plate Recognition (LPR)
                         scans at the entry gate.</p>
 
                     <!-- TODO: Connect VehicleServlet -->
@@ -702,7 +552,10 @@
 
                                 <i class="fa-solid fa-car-side form-group__icon"></i>
 
-                                <select id="brand" name="brand" class="form-group__input" required>
+                                <select id="brand"
+                                        name="brand"
+                                        class="form-group__input"
+                                        required>
 
                                     <option value="" disabled selected>
                                         Select vehicle brand
@@ -729,8 +582,12 @@
                             <div class="form-group__input-wrapper">
                                 <i class="fa-solid fa-car-side form-group__icon"></i>
 
-                                <input type="text" class="form-group__input" id="vehicleModel" name="vehicleModel"
-                                       placeholder="e.g. Camry" required>
+                                <input type="text"
+                                       class="form-group__input"
+                                       id="vehicleModel"
+                                       name="vehicleModel"
+                                       placeholder="e.g. Camry"
+                                       required>
                             </div>
                         </div>
 
@@ -742,8 +599,13 @@
                             <div class="form-group__input-wrapper">
                                 <i class="fa-solid fa-fingerprint form-group__icon"></i>
 
-                                <input type="text" class="form-group__input" id="licensePlate" name="licensePlate"
-                                       placeholder="e.g. 51K-999.99" pattern="^[0-9]{2}[A-Za-z]-[0-9]{4,5}$" required>
+                                <input type="text"
+                                       class="form-group__input"
+                                       id="licensePlate"
+                                       name="licensePlate"
+                                       placeholder="e.g. 51K-999.99"
+                                       pattern="^[0-9]{2}[A-Za-z]-[0-9]{4,5}$"
+                                       required>
                             </div>
                         </div>
 
@@ -755,12 +617,20 @@
                             <div class="form-group__input-wrapper">
                                 <i class="fa-solid fa-palette form-group__icon"></i>
 
-                                <input type="text" class="form-group__input" id="color" name="color"
-                                       placeholder="e.g. White" maxlength="20" pattern="^[A-Za-z ]+$" required>
+                                <input type="text"
+                                       class="form-group__input"
+                                       id="color"
+                                       name="color"
+                                       placeholder="e.g. White"
+                                       maxlength="20"
+                                       pattern="^[A-Za-z ]+$"
+                                       required>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn--primary" id="submitAddVehicleBtn">
+                        <button type="submit"
+                                class="btn btn--primary"
+                                id="submitAddVehicleBtn">
 
                             Register Vehicle
                         </button>
@@ -771,11 +641,10 @@
         </div>
 
         <!-- ==========================================================================
-   DASHBOARD MODAL: BOOK CAR WASH
-   ========================================================================== -->
+           DASHBOARD MODAL: BOOK CAR WASH
+           ========================================================================== -->
         <div class="modal-overlay" id="bookingModalOverlay">
-            <div class="modal-card" id="bookingModalCard" role="dialog" aria-modal="true"
-                 aria-labelledby="bookingTitle">
+            <div class="modal-card" id="bookingModalCard" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
                 <div class="modal-card__header">
                     <h2 class="modal-card__title" id="bookingTitle">Book Car Wash</h2>
                     <button type="button" class="modal-card__close" aria-label="Close Modal" id="closeBookingBtn">
@@ -784,8 +653,7 @@
                 </div>
 
                 <div class="modal-card__body">
-                    <p class="modal-card__lead">Schedule a wash slot for any of your registered vehicles with
-                        priority lanes
+                    <p class="modal-card__lead">Schedule a wash slot for any of your registered vehicles with priority lanes
                         active.</p>
 
                     <!-- TODO: Connect BookingServlet -->
@@ -796,8 +664,7 @@
                             <label for="bookingVehicle" class="form-group__label">Select Vehicle</label>
                             <div class="form-group__input-wrapper">
                                 <i class="fa-solid fa-car form-group__icon"></i>
-                                <select id="bookingVehicle" name="bookingVehicle" class="form-group__input"
-                                        required>
+                                <select id="bookingVehicle" name="bookingVehicle" class="form-group__input" required>
                                     <option value="" disabled selected>Choose a vehicle</option>
                                     <option value="51K-123.45">Tesla Model 3 (51K-123.45)</option>
                                     <option value="30H-987.65">Ford F-150 (30H-987.65)</option>
@@ -823,8 +690,7 @@
                             <label for="bookingDate" class="form-group__label">Wash Date</label>
                             <div class="form-group__input-wrapper">
                                 <i class="fa-solid fa-calendar form-group__icon"></i>
-                                <input type="date" class="form-group__input" id="bookingDate" name="bookingDate"
-                                       required>
+                                <input type="date" class="form-group__input" id="bookingDate" name="bookingDate" required>
                             </div>
                         </div>
 

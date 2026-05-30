@@ -1686,381 +1686,99 @@ img {
 
 /* Dashboard: Membership Card */
 .member-overview-card {
-    background: linear-gradient(135deg, #004ecc 0%, #007bff 50%, #00b2fe 100%);
+    background: var(--grad-primary);
     color: var(--color-white);
     border: none;
     position: relative;
     overflow: hidden;
-    padding: 32px;
-    border-radius: var(--radius-lg);
-    box-shadow: 0 12px 30px rgba(0, 102, 204, 0.18);
-    transition: all var(--transition-normal);
 }
 
-.member-overview-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 102, 204, 0.28);
-}
-
-.member-overview-card__glow-blob-1 {
+.member-overview-card::after {
+    content: '';
     position: absolute;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
-    top: -120px;
-    left: -120px;
-    pointer-events: none;
-    z-index: 1;
+    top: -20px;
+    right: -20px;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
 }
 
-.member-overview-card__glow-blob-2 {
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, rgba(0, 242, 254, 0.25) 0%, rgba(0, 242, 254, 0) 70%);
-    bottom: -100px;
-    right: -50px;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.member-overview-card__container {
-    position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 32px;
-    align-items: stretch;
-}
-
-/* Digital Loyalty Pass Face */
-.member-overview-card__pass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-md);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 200px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-    transition: transform var(--transition-normal);
-}
-
-.member-overview-card__pass:hover {
-    transform: scale(1.02);
-}
-
-.member-overview-card__pass-shine {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 50%);
-    pointer-events: none;
-}
-
-.member-overview-card__pass-header {
+.member-overview-card__header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    margin-bottom: 24px;
 }
 
-.member-overview-card__pass-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.5px;
-    color: var(--color-white);
-}
-
-.member-overview-card__pass-logo {
-    color: var(--color-aqua);
-    filter: drop-shadow(0 0 4px rgba(0, 242, 254, 0.6));
-}
-
-.member-overview-card__pass-badge {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: 4px 10px;
-    border-radius: var(--radius-full);
-    font-size: 0.7rem;
-    font-weight: 700;
+.member-overview-card__tier-lbl {
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.member-overview-card__pass-badge i {
-    color: #ffd700;
-}
-
-.member-overview-card__pass-body {
-    margin: 24px 0;
-}
-
-.member-overview-card__pass-label {
-    font-size: 0.65rem;
+    opacity: 0.8;
     font-weight: 600;
-    letter-spacing: 1.5px;
-    opacity: 0.7;
-    display: block;
-    margin-bottom: 2px;
 }
 
-.member-overview-card__pass-name {
-    font-family: var(--font-heading);
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--color-white);
-    letter-spacing: 0.25px;
-}
-
-.member-overview-card__pass-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    padding-top: 16px;
-}
-
-.member-overview-card__pass-stat {
-    display: flex;
-    flex-direction: column;
-}
-
-.member-overview-card__pass-stat-lbl {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.7;
-    margin-bottom: 2px;
-}
-
-.member-overview-card__pass-stat-val {
-    font-family: var(--font-heading);
-    font-size: 1.15rem;
+.member-overview-card__tier-val {
+    font-size: 2.2rem;
     font-weight: 800;
     color: var(--color-white);
+    font-family: var(--font-heading);
 }
 
-.member-overview-card__pass-stat-val.font-accent {
-    color: var(--color-aqua);
-    text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+.member-overview-card__badge {
+    padding: 6px 14px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.member-overview-card__pass-stat-val .pts-suffix {
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: uppercase;
+.member-overview-card__points-lbl {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 4px;
+}
+
+.member-overview-card__points-val {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    font-family: var(--font-heading);
+}
+
+.member-overview-card__points-val span {
+    font-size: 1rem;
+    font-weight: 400;
     opacity: 0.8;
 }
 
-/* Progression Hub */
-.member-overview-card__progress-hub {
+.member-overview-card__progress-wrapper {
+    margin-top: auto;
+}
+
+.member-overview-card__progress-info {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.member-overview-card__progress-header {
-    margin-bottom: 16px;
-}
-
-.member-overview-card__progress-pretitle {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--color-aqua);
-    display: block;
-    margin-bottom: 4px;
-}
-
-.member-overview-card__progress-title {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: var(--color-white);
-    letter-spacing: -0.25px;
-    margin-bottom: 6px;
-}
-
-.member-overview-card__progress-title .tier-highlight {
-    background: linear-gradient(to right, #00f2fe, #ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 900;
-}
-
-.member-overview-card__progress-desc {
+    justify-content: space-between;
     font-size: 0.8rem;
-    opacity: 0.85;
-    line-height: 1.4;
+    opacity: 0.8;
+    margin-bottom: 8px;
 }
 
-.member-overview-card__requirement-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.member-overview-card__req-card {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-sm);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    transition: all var(--transition-fast);
-}
-
-.member-overview-card__req-card:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
-    transform: translateX(4px);
-}
-
-.member-overview-card__req-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(0, 242, 254, 0.12);
-    border: 1px solid rgba(0, 242, 254, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-aqua);
-    font-size: 1rem;
-    flex-shrink: 0;
-}
-
-.member-overview-card__req-details {
-    display: flex;
-    flex-direction: column;
-}
-
-.member-overview-card__req-target {
-    font-family: var(--font-heading);
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--color-white);
-    line-height: 1.2;
-}
-
-.member-overview-card__req-target strong {
-    color: var(--color-aqua);
-    font-weight: 800;
-}
-
-.member-overview-card__req-target .currency {
-    font-size: 0.75rem;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-.member-overview-card__req-lbl {
-    font-size: 0.7rem;
-    opacity: 0.7;
-    margin-top: 1px;
-}
-
-/* Divider 'OR' Capsule */
-.member-overview-card__divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin: 2px 0;
-}
-
-.member-overview-card__divider-line {
-    flex-grow: 1;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.member-overview-card__divider-badge {
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 2px 8px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+.member-overview-card__progress-bar-bg {
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.25);
     border-radius: var(--radius-full);
-    color: var(--color-white);
-    opacity: 0.9;
+    overflow: hidden;
 }
 
-/* MAX TIER STATE */
-.member-overview-card__max-tier {
-    text-align: center;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
-.member-overview-card__max-icon-wrapper {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0) 70%);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 4px;
-    animation: pulseGlow 2.5s infinite;
-}
-
-.member-overview-card__max-crown {
-    color: #ffd700;
-    font-size: 1.8rem;
-    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
-}
-
-.member-overview-card__max-title {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: var(--color-white);
-    letter-spacing: -0.25px;
-}
-
-.member-overview-card__max-desc {
-    font-size: 0.8rem;
-    opacity: 0.9;
-    line-height: 1.5;
-    max-width: 280px;
-}
-
-@keyframes pulseGlow {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
-    }
-
-    70% {
-        transform: scale(1.05);
-        box-shadow: 0 0 0 12px rgba(255, 215, 0, 0);
-    }
-
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
-    }
+.member-overview-card__progress-bar-fill {
+    height: 100%;
+    background-color: var(--color-aqua);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-normal);
 }
 
 /* Quick Actions Grid */
@@ -2540,7 +2258,6 @@ img {
 
     .dashboard-main {
         margin-left: 0;
-        min-width: 0;
     }
 
     .dash-header {
@@ -2555,48 +2272,8 @@ img {
         padding: 20px;
     }
 
-    .dash-card {
-        padding: 20px;
-    }
-
-    .member-overview-card {
-        padding: 24px;
-    }
-
-    .member-overview-card__container {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-
-    .member-overview-card__pass {
-        padding: 20px;
-        min-height: 180px;
-    }
-
-    .member-overview-card__progress-hub {
-        padding: 4px 0;
-    }
-
     .quick-actions {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-    }
-
-    .quick-action-btn {
-        padding: 12px 8px;
-        gap: 8px;
-    }
-
-    .quick-action-btn__icon {
-        width: 36px;
-        height: 36px;
-        font-size: 1.1rem;
-    }
-
-    .quick-action-btn__lbl {
-        font-size: 0.75rem;
-        text-align: center;
-        line-height: 1.2;
+        grid-template-columns: 1fr;
     }
 
     .modal-card {
@@ -2645,80 +2322,6 @@ img {
 
     .dash-header__name {
         display: none;
-    }
-
-    /* Dashboard mobile specific adjustments */
-    .dashboard-content {
-        padding: 16px;
-        gap: 20px;
-    }
-
-    .dash-card {
-        padding: 16px;
-    }
-
-    .vehicle-card {
-        padding: 16px;
-    }
-
-    .member-overview-card {
-        padding: 20px;
-    }
-
-    .member-overview-card__pass {
-        padding: 16px;
-        min-height: 160px;
-    }
-
-    .member-overview-card__pass-name {
-        font-size: 1.15rem;
-    }
-
-    .member-overview-card__pass-stat-val {
-        font-size: 1rem;
-    }
-
-    .booking-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .booking-item__badge {
-        align-self: flex-start;
-    }
-
-    .history-filter-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .history-filter-form__group-search,
-    .history-filter-form__group-status,
-    #filterHistoryBtn {
-        width: 100%;
-        min-width: 0;
-    }
-
-    #saveSettingsBtn {
-        width: 100%;
-    }
-
-    .history-table-wrapper {
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .history-table-wrapper::-webkit-scrollbar {
-        height: 6px;
-    }
-
-    .history-table-wrapper::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    .history-table-wrapper::-webkit-scrollbar-thumb {
-        background-color: var(--color-border);
-        border-radius: 3px;
     }
 }
 
@@ -2922,7 +2525,7 @@ img {
 }
 
 
-.form-error {
+.form-error{
     color: #ff4d4f;
     font-size: 14px;
     margin-bottom: 16px;
